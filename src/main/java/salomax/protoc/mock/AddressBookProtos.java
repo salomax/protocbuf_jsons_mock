@@ -344,7 +344,7 @@ public final class AddressBookProtos {
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         initFields();
-        int mutable_bitField0_ = 0;
+        // int mutable_bitField0_ = 0;
         com.google.protobuf.UnknownFieldSet.Builder unknownFields =
             com.google.protobuf.UnknownFieldSet.newBuilder();
         try {
@@ -2122,7 +2122,7 @@ public final class AddressBookProtos {
 
       public salomax.protoc.mock.AddressBookProtos.AddressBook buildPartial() {
         salomax.protoc.mock.AddressBookProtos.AddressBook result = new salomax.protoc.mock.AddressBookProtos.AddressBook(this);
-        int from_bitField0_ = bitField0_;
+        // int from_bitField0_ = bitField0_;
         if (personBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             person_ = java.util.Collections.unmodifiableList(person_);
