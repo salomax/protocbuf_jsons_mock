@@ -1,6 +1,6 @@
 package tutorial;
 
-option java_package = "salomax.protoc.mock";
+option java_package = "salomax.mock.protoc.mock";
 option java_outer_classname = "AddressBookProtos";
 
 message Person {

@@ -1,4 +1,4 @@
-package salomax.protoc.mock;
+package salomax.mock.protoc.mock;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,8 +9,10 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import salomax.protoc.mock.AddressBookProtos.AddressBook;
-import salomax.protoc.mock.AddressBookProtos.Person;
+import salomax.mock.Mock;
+import salomax.mock.json.bean.JsonResult;
+import salomax.mock.protoc.mock.AddressBookProtos.AddressBook;
+import salomax.mock.protoc.mock.AddressBookProtos.Person;
 
 /**
  * Classe mock demonstrando a serialização 
@@ -21,7 +23,7 @@ import salomax.protoc.mock.AddressBookProtos.Person;
  * 
  * @author salomao.marcos@gmail.com
  */
-public class ProtocBufferMock {
+public class ProtocBufferMock implements Mock {
 	
 	/**
 	 * Logger.
@@ -30,16 +32,16 @@ public class ProtocBufferMock {
 			Logger.getLogger(ProtocBufferMock.class.getName());
 	
 	/**
-	 * Método inicial.
-	 * 
-	 * @param args Argumentos de entrada.
+	 * Método contendo o código de teste/validação/simulação.
 	 */
-	public static void main(String[] args) {
+	public JsonResult mock() {
 		
-		LOGGER.info("Iniciando mock");
+		LOGGER.log(Level.INFO, "Mock ProtocolBuffer");
 		
 		File file = null;
 		OutputStream outputStream = null;
+		
+		JsonResult jsonResult = new JsonResult();
 				
 		try {
 			
@@ -50,9 +52,6 @@ public class ProtocBufferMock {
 			file = File.createTempFile("addressbook_", ".protoc");
 			outputStream = new FileOutputStream(file);
 			
-			LOGGER.log(Level.INFO, "Criado arquivo temporario {0}", 
-					file.getCanonicalFile());
-			
 			/*
 			 *  Criando os objetos já preenchidos com os dados.
 			 */
@@ -60,8 +59,8 @@ public class ProtocBufferMock {
 
 			AddressBook addressBook = buildAddressBook();
 			
-			LOGGER.log(Level.INFO, "Objects instantiation time {0}", 
-					(System.currentTimeMillis() - timeBefore));
+			jsonResult.setObjectInstatiationTime(
+					System.currentTimeMillis() - timeBefore);
 
 			/*
 			 * Serializando objeto.
@@ -70,8 +69,8 @@ public class ProtocBufferMock {
 			
 			addressBook.writeTo(outputStream);
 			
-			LOGGER.log(Level.INFO, "Serialization time {0}", 
-					(System.currentTimeMillis() - timeBefore));
+			jsonResult.setSerializationTime(
+					System.currentTimeMillis() - timeBefore);
 			
 			/*
 			 * Deserializando objeto.
@@ -80,10 +79,10 @@ public class ProtocBufferMock {
 			
 			addressBook = AddressBook.parseFrom(new FileInputStream(file));
 			
-			LOGGER.log(Level.INFO, "Deserialization time {0}", 
-					(System.currentTimeMillis() - timeBefore));
+			jsonResult.setDeserializationTime(
+					System.currentTimeMillis() - timeBefore);
 			
-			LOGGER.log(Level.INFO, "\n{0}", addressBook);
+			jsonResult.setOutput(addressBook.toString());
 			
 		} catch (FileNotFoundException e) {
 			
@@ -105,11 +104,13 @@ public class ProtocBufferMock {
 			}
 
 			// remover arquivo temporario
-			if (outputStream != null) {
-				// file.deleteOnExit();
+			if (file != null) {
+				file.deleteOnExit();
 			}
 			
 		}
+		
+		return jsonResult;
 		
 	}
 
@@ -139,6 +140,10 @@ public class ProtocBufferMock {
 		addressBookBuilder.addPerson(person);
 		
 		return addressBookBuilder.build();
+	}
+
+	public String getName() {
+		return "com.google.protobuf";
 	}
 	
 }
